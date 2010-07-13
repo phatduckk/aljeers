@@ -50,3 +50,66 @@ This tells the app that when a request comes in for `/example/FOO` the `FOO` met
         * `responseType` fully qualified class name of the returned payload (ex: `java.util.HashMap`)
         * `simpleResponseType` a simple representation of `responseType` (ex: `HashMap`)
     * the frontend console has a convenient checkbox to toggle debug mode on/off
+
+## Sample Handler
+
+    package com.example.you;
+
+    import com.phatduckk.aljeers.handler.BaseHandler;
+    import com.phatduckk.aljeers.handler.annotations.GET;
+    import com.phatduckk.aljeers.handler.annotations.HEAD;
+    import com.phatduckk.aljeers.handler.annotations.POST;
+    import com.phatduckk.aljeers.handler.annotations.PUT;
+    import com.phatduckk.aljeers.example.User;
+
+    import javax.servlet.http.HttpServletRequest;
+    import javax.servlet.http.HttpServletResponse;
+
+    public class YourHandler extends BaseHandler {
+        @GET
+        /**
+         * String response
+         */
+        public Object endpointThatReturnsAString(HttpServletRequest req, HttpServletResponse resp) {
+            return "Hello there";
+        }
+
+        @GET
+        /**
+         * String response based on a query string param
+         */
+        public Object endpointThatGrabsAQueryStringParameter(HttpServletRequest req, HttpServletResponse resp) {
+            return "Hello there " + req.getParameter("name");
+        }
+
+        @GET
+        /**
+         * An error
+         */
+        public Object endpointWithError(HttpServletRequest req, HttpServletResponse resp) throws Throwable {
+            throw new Exception("balls, shit broke");
+        }
+
+        @POST
+        /**
+         * This one's a bit interesting...
+         *
+         * This method expects the entire body of an HTTP POST to be a JSON representation of a
+         * com.phatduckk.aljeers.example.User class
+         *
+         * The getObjectFromRequest() method will map the request's body to a com.phatduckk.aljeers.example.User class.
+         * The code then sets a couple properties on the user (email) and returns it. (BS use case but its an example...)           
+         *
+         */
+        public Object postAUser(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+            User user = null;
+            try {
+                user = (User) getObjectFromRequest(req, User.class);
+                user.setEmail("arin@example.com");
+            } catch (IOException e) {
+                throw new Exception("Include a JSON representation of a user in the POST body. Ex: {\"name\": \"John Doe\"}");
+            }
+
+            return user;
+        }
+    }
