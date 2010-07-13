@@ -24,6 +24,7 @@ If you look at the example/example.conf file you'll see 2 registered handlers...
 
 `
 /example = com.phatduckk.aljeers.example.ExampleHandler
+
 /fe = com.phatduckk.aljeers.handler.FrontendHandler
 `
 
