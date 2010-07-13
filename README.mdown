@@ -166,3 +166,4 @@ Or enable the Frontend console in `path/to/your/handlers.conf` and test from <a 
 * standardize the response payload
 * write some unit tests
 * test/optimize performance
+* make console pretty
