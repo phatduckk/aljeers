@@ -19,7 +19,7 @@ you'll be able to hit a bunch of methods in the ExampleHandler and see what thei
 * write a class that extends BaseHandler
 * all public methods are eligible to be accessed via a URI
 * to make a method accessible
-        * its signature must match `methodNameHere(HttpServletRequest req, HttpServletResponse resp)`
-        * you need to annotate it with `@GET`, `@POST`, `@PUT`, `@DELETE` or `@HEAD`
-        * the method can throw any exception it wants...
-        * anything returned from the method will be JSON-encoded and sent
+    * its signature must match `methodNameHere(HttpServletRequest req, HttpServletResponse resp)`
+    * you need to annotate it with @GET, @POST, @PUT, @DELETE or @HEAD
+    * the method can throw any exception it wants...
+    * anything returned from the method will be JSON-encoded and sent
