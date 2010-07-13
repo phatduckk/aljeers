@@ -156,3 +156,13 @@ Test an endpoint
 Or enable the Frontend console in `path/to/your/handlers.conf` and test from <a href="http://localhost:8080/fe">http://localhost:8080/fe</a>
 
     /fe = com.phatduckk.aljeers.handler.FrontendHandler
+
+## TODO:
+
+* wrap up the request and response objects
+    * expose a getStatus() method on the response
+    * expose easy getInt(paramName, defaultValue) type methods on the request object
+* deal with headers better
+* standardize the response payload
+* write some unit tests
+* test/optimize performance
