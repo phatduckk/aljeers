@@ -153,6 +153,6 @@ Test an endpoint
 
     curl "X-Aljeers-Debug:true" -d "{\"name\": \"arin\"}" http://localhost:8080/my_prefix/postAUser && echo ""
 
-Or enable the Frontend console in `path/to/your/handlers.conf` and test from http://localhost:8080/fe
+Or enable the Frontend console in `path/to/your/handlers.conf` and test from <a href="http://localhost:8080/fe">http://localhost:8080/fe</a>
 
     /fe = com.phatduckk.aljeers.handler.FrontendHandler
