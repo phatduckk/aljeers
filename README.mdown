@@ -56,7 +56,7 @@ This tells the app that when a request comes in for `/example/FOO` the `FOO` met
 
 ## Example: write a handler, configure it, compile the project & run it...
 
-Here's a condensed version of the code in the `ExampleHandler`
+Here's a condensed version of the code in the <a href="http://github.com/phatduckk/aljeers/blob/master/src/main/java/com/phatduckk/aljeers/example/ExampleHandler.java">`ExampleHandler`</a>
 
     package com.example.you;
 
