@@ -49,3 +49,4 @@ This tells the app that whenever a request comes in for `/example/FOO` run the `
             * `status` HTTP ststus of the response
             * `responseType` fully qualified class name of the returned payload (ex: `java.util.HashMap`)
             * `simpleResponseType` a simple representation of `responseType` (ex: `HashMap`)
+        * the frontend console has a convenient checkbox to toggle debug mode on/off
