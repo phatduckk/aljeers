@@ -20,7 +20,7 @@ The app is just a Java app with Jetty embeded... so you can run it the same way 
 The only "special" thing it needs is a property that tells it what config file to use.
 
 The config is just a properties file where the keys are a URI "prefix" and the values are a full qualified class name.
-If you look at the example/example.conf file you'll see 2 registered handlers...
+If you look at the <a href="http://github.com/phatduckk/aljeers/blob/master/example/example.conf">example/example.conf</a> file you'll see 2 registered handlers...
 
     /example = com.phatduckk.aljeers.example.ExampleHandler
     /fe = com.phatduckk.aljeers.handler.FrontendHandler
