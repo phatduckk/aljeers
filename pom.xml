@@ -93,7 +93,7 @@
                             <value>${basedir}/example/example.conf</value>
                         </systemProperty>
                     </systemProperties>
-                    <mainClass>com.phatduckk.aljeers.aljeers</mainClass>
+                    <mainClass>com.phatduckk.aljeers.Aljeers</mainClass>
                 </configuration>
             </plugin>
 
@@ -129,7 +129,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>com.phatduckk.aljeers.aljeers</mainClass>
+                            <mainClass>com.phatduckk.aljeers.Aljeers</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

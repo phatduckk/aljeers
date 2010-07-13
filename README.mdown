@@ -53,6 +53,8 @@ This tells the app that when a request comes in for `/example/FOO` the `FOO` met
 
 ## Sample Handler
 
+Here's a condensed version of the code in the `ExampleHandler`
+
     package com.example.you;
 
     import com.phatduckk.aljeers.handler.BaseHandler;
@@ -114,3 +116,16 @@ This tells the app that when a request comes in for `/example/FOO` the `FOO` met
             return user;
         }
     }
+
+Once you've written the code you need to update your config file (ex: path/to/your/handlers.conf) and add:
+
+    /my_prefix = com.example.you.YourHandler
+
+Now compile your code
+
+    mvn compile
+    mvn package
+
+Run the app
+
+    java -Dconf.handlers=path/to/your/handlers.conf  -jar target/aljeers-1.0-SNAPSHOT-jar-with-dependencies.jar
