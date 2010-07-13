@@ -19,7 +19,10 @@ you'll be able to hit a bunch of methods in the ExampleHandler and see what thei
 * write a class that extends BaseHandler
 * all public methods are eligible to be accessed via a URI
 * to make a method accessible
-    * its signature must match `methodNameHere(HttpServletRequest req, HttpServletResponse resp)`
-    * you need to annotate it with @GET, @POST, @PUT, @DELETE or @HEAD
+    * its signature must match `public methodNameHere(HttpServletRequest req, HttpServletResponse resp)`
+    * you need to annotate it with `@GET`, `@POST`, `@PUT`, `@DELETE` or `@HEAD`
     * the method can throw any exception it wants...
     * anything returned from the method will be JSON-encoded and sent
+* edit the server's config file to register yoru handler with a URI prefix
+    * edit a properties file and add a line like...
+        /my_prefix = com.example.you.handler.YourNewHandler
