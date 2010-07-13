@@ -19,7 +19,7 @@ you'll be able to hit a bunch of methods in the ExampleHandler and see what thei
 The app is just a Java app with Jetty embeded... so you can run it the same way you run any Java app.
 The only "special" thing it needs is a property that tells it what config file to use.
 
-The config file just a properties file where the keys are a URI "prefix" and the values are a full qualified class name.
+The config is just a properties file where the keys are a URI "prefix" and the values are a full qualified class name.
 If you look at the example/example.conf file you'll see 2 registered handlers...
 
     /example = com.phatduckk.aljeers.example.ExampleHandler
@@ -38,6 +38,6 @@ This tells the app that whenever a request comes in for `/example/FOO` run the `
     * its signature must match `public methodNameHere(HttpServletRequest req, HttpServletResponse resp)`
     * you need to annotate it with `@GET`, `@POST`, `@PUT`, `@DELETE` or `@HEAD` to define what HTTP methods are allowed
 * edit the server's config file to register your handler with a URI prefix
-        `/my_prefix = com.example.you.handler.YourNewHandler`
+        /my_prefix = com.example.you.handler.YourNewHandler
 * restart the app and tell it to use your config file
-        `-Dconf.handlers=your_config_file.conf`
+        -Dconf.handlers=your_config_file.conf
