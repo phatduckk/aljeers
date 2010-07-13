@@ -25,4 +25,4 @@ you'll be able to hit a bunch of methods in the ExampleHandler and see what thei
     * anything returned from the method will be JSON-encoded and sent
 * edit the server's config file to register yoru handler with a URI prefix
     * edit a properties file and add a line like...
-        /my_prefix = com.example.you.handler.YourNewHandler
+        `/my_prefix = com.example.you.handler.YourNewHandler`
