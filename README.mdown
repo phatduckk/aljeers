@@ -137,13 +137,13 @@ Test an endpoint
 
     String response at:
 
-    [http://localhost:8080/my_prefix/endpointThatReturnsAString](http://localhost:8080/my_prefix/endpointThatReturnsAString)
+    http://localhost:8080/my_prefix/endpointThatReturnsAString
     or
-    <a href="http://localhost:8080/my_prefix/endpointThatGrabsAQueryStringParameter?name=bill">http://localhost:8080/my_prefix/endpointThatGrabsAQueryStringParameter?name=bill</a>
+    http://localhost:8080/my_prefix/endpointThatGrabsAQueryStringParameter?name=bill
 
     check out an error response:
 
-    <a href="http://localhost:8080/my_prefix/endpointWithError">http://localhost:8080/my_prefix/endpointWithError</a>
+    http://localhost:8080/my_prefix/endpointWithError
 
     POST a user
 
@@ -157,4 +157,4 @@ Or enable the Frontend console in `path/to/your/handlers.conf` and hit the endpo
 
     /fe = com.phatduckk.aljeers.handler.FrontendHandler
 
-    goto: <a href="http://localhost:8080/fe">http://localhost:8080/fe</a>
+    goto: http://localhost:8080/fe
