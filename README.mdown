@@ -98,8 +98,9 @@ This tells the app that when a request comes in for `/example/FOO` the `FOO` met
          * com.phatduckk.aljeers.example.User class
          *
          * The getObjectFromRequest() method will map the request's body to a com.phatduckk.aljeers.example.User class.
-         * The code then sets a couple properties on the user (email) and returns it. (BS use case but its an example...)           
+         * The code then sets a couple properties on the user (email) and returns it. (BS use case but its an example...)
          *
+         * You can try this out using the console frontend
          */
         public Object postAUser(HttpServletRequest req, HttpServletResponse resp) throws Exception {
             User user = null;
