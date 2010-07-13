@@ -2,7 +2,7 @@
 
 A Little JSON (ignore the e's) Rest Server.
 
-This project is a super simple wrapper around Jetty that allows you to (i think) easily get JSON requests and send JSON responses.
+This project is a super simple wrapper around Jetty that allows you to easily get JSON requests and send JSON responses.
 
 
 ## Running examples via the console
@@ -11,12 +11,12 @@ This project is a super simple wrapper around Jetty that allows you to (i think)
 * run ./run_example.sh
 * cruise on over to http://localhost:8080/fe to check out the simple console
 
-The console lets you make GET, PUT, POST, HEAD and DELETE request against any of the configured handlers. If you're running the example
+The console lets you make `GET`, `PUT`, `POST`, `HEAD` and `DELETE` request against any of the configured handlers. If you're running the example
 you'll be able to hit a bunch of methods in the ExampleHandler and see what their output looks like...
 
 ## Running the app
 
-The app is just a Java app with Jetty embeded... so you can run it the same way you run any Java app.
+The app is just a Java app with Jetty embeded... so you can run it the same way you run any Java app. The main class is `com.phatduckk.aljeers.Aljeers`.
 The only "special" thing it needs is a property that tells it what config file to use.
 
 The config is just a properties file where the keys are a URI "prefix" and the values are a full qualified class name.
