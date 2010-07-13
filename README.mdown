@@ -35,9 +35,17 @@ This tells the app that whenever a request comes in for `/example/FOO` run the `
         * its signature must match `public methodNameHere(HttpServletRequest req, HttpServletResponse resp)`
         * you need to annotate it with `@GET`, `@POST`, `@PUT`, `@DELETE` or `@HEAD` to define what HTTP methods are allowed
     * the method can throw any `Throwable` it wants...
-    * anything returned from the method will be JSON-encoded and sent
-        * including exceptions
+    * anything returned from the method will be JSON-encoded and sent to the client
+        * `Throwable`s are also JSON encoded
+        * the response body will contain the serialized response
 * edit the server's config file to register your handler with a URI prefix
         /my_prefix = com.example.you.handler.YourNewHandler
 * restart the app and tell it to use your config file
         -Dconf.handlers=your_config_file.conf
+* including a `X-Aljeers-Debug: true` header or a `x-aljeers-debug=true` query string param will get you into debug mode
+        * debug mode is strictly to make it easy to look at calls thru a browser/curl
+        * your output will be pretty-printed
+        * the body of the response will contain a bunch more info
+            * `status` HTTP ststus of the response
+            * `responseType` fully qualified class name of the returned payload (ex: `java.util.HashMap`)
+            * `simpleResponseType` a simple representation of `responseType` (ex: `HashMap`)
