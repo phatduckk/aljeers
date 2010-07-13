@@ -14,6 +14,19 @@ This project is a super simple wrapper around Jetty that allows you to (i think)
 The console lets you make GET, PUT, POST, HEAD and DELETE request against any of the configured handlers. If you're running the example
 you'll be able to hit a bunch of methods in the ExampleHandler and see what their output looks like...
 
+## Running the app
+
+The app is just a Java app with Jetty embeded... so you can run it the same way you run any Java app.
+The only "special" thing it needs is a property that tells it what config file to use.
+
+The config file just a properties file where the keys are a URI "prefix" and the values are a full qualified class name.
+If you look at the example/example.conf file you'll see 2 registered handlers...
+
+`
+/example = com.phatduckk.aljeers.example.ExampleHandler
+/fe = com.phatduckk.aljeers.handler.FrontendHandler
+`
+
 ## Writing a handler
 
 * write a class that extends BaseHandler
