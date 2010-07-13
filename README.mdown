@@ -51,7 +51,7 @@ This tells the app that when a request comes in for `/example/FOO` the `FOO` met
         * `simpleResponseType` a simple representation of `responseType` (ex: `HashMap`)
     * the frontend console has a convenient checkbox to toggle debug mode on/off
 
-## Sample Handler
+## Example: write a handler, configure it, compile the project & run it...
 
 Here's a condensed version of the code in the `ExampleHandler`
 
