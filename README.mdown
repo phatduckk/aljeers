@@ -25,7 +25,7 @@ If you look at the <a href="http://github.com/phatduckk/aljeers/blob/master/exam
     /example = com.phatduckk.aljeers.example.ExampleHandler
     /fe = com.phatduckk.aljeers.handler.FrontendHandler
 
-This tells the app that whenever a request comes in for `/example/FOO` run the `FOO` method in the class `com.phatduckk.aljeers.example.ExampleHandler`
+This tells the app that when a request comes in for `/example/FOO` the `FOO` method in the class `com.phatduckk.aljeers.example.ExampleHandler` should be executed.
 
 ## Writing a handler
 
