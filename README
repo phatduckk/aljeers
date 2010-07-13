@@ -1,0 +1,18 @@
+# ALJeeRS
+
+A Little JSON (ignore the e's) Rest Server.
+
+This project is a super simple wrapper around Jetty that allows you to (i think) easily get JSON requests and send JSON responses.
+
+
+## Running it
+
+* install maven (or make sure mvn is in your path)
+* run ./run_example.sh
+* cruise on over to http://localhost:8080/fe to check out the simple console
+
+
+## Using the console
+
+The console lets you make GET, PUT, POST, HEAD and DELETE request against any of the configured handlers. If you're running the example
+you'll be able to hit a bunch of methods in the ExampleHandler and see what their output looks like...
