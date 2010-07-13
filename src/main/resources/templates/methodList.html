@@ -1,0 +1,7 @@
+<label for="methodList">Endpoint</label>
+<select id="methodList" name="handler">
+    <option></option>
+    #foreach($method in $methods.entrySet())
+        <option value="$method.value">$method.key</option>
+    #end
+</select>

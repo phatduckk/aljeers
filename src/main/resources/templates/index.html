@@ -1,0 +1,189 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Aljeers</title>
+
+    <style type="">
+        BODY {
+            font-family: Verdana;
+            font-size: 12px;
+        }
+
+        FIELDSET {
+            margin-bottom: 20px;
+            padding: 20px;
+        }
+
+        LEGEND {
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        .callOpt {
+            margin: 0px 20px 10px 0px;
+            float: left;
+        }
+
+        #methods, #results {
+            display: none;
+        }
+
+        #callBodyHolder {
+            clear: both;
+            display: none;
+        }
+
+        TEXTAREA {
+            width: 100%;
+            margin-top: 5px;
+        }
+
+        #resultsHolder {
+            width: 100%;
+            height: 400px;
+        }
+
+        .clear {
+            clear: both;
+        }
+
+        LABEL {
+            font-weight: bold;
+        }
+
+        #submitStuff DIV {
+            margin-top: 10px;
+        }
+
+        #submitStuff * {
+            text-align: right;
+            font-weight: normal;
+        }
+
+        #submitStuff {
+            text-align: right;
+            padding-top: 10px;
+            display: none;
+        }
+    </style>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+</head>
+
+<body>
+<h1>Aljeers</h1>
+
+    <form id="callForm" action="#">
+        <fieldset>
+            <legend>REST Call</legend>
+
+            <div class="callOpt" id="handelrs">
+                <label for="handlerList">Handler</label>
+                <select id="handlerList" name="handler">
+                    <option></option>
+                    #foreach($handler in $handlers.entrySet())
+                        <option value="$handler.key">$handler.value</option>
+                    #end
+                </select>
+            </div>
+
+            <div class="callOpt" id="methods">
+
+            </div>
+
+            <br class="clear" />
+            <div id="callBodyHolder">
+                <label for="callBody"></label>
+                <textarea id="callBody" rows="3"></textarea>
+            </div>
+
+            <div id="submitStuff">
+                <div><input type="submit" value="Make Call" /></div>
+
+                <div>
+                    <label for="debug">Show debug output</label>
+                    <input id="debug" type="checkbox" value="1" name="X-Aljeers-Debug" />
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+    <fieldset id="results">
+        <legend>Results</legend>
+        <div id="headers"></div>
+        <textarea style="width: 100%" id="resultsHolder"></textarea>
+    </fieldset>
+</body>
+
+
+<script>
+    jQuery(document).ready(function() {
+        jQuery("#handlerList").change(function(){
+            var handler = jQuery("#handlerList :selected").text()
+
+            jQuery.post('/fe/getMethods', {"handler": handler}, function(data) {
+                jQuery('#methods').html(data);
+                jQuery('#methods').css("display", "inline");
+
+                $("#callBodyHolder").css("display", "none");
+                $("#submitStuff").css("display", "none");
+                jQuery("#callBody").val("");
+            });
+        });
+
+        jQuery("#methodList").live("change", function() {
+            var methodName = jQuery("#methodList :selected").text();
+            var httpMethod = jQuery("#methodList :selected").val();
+
+            jQuery('#results').css("display", "none");
+            jQuery("#callBody").val("");
+
+            if (httpMethod == 'GET') {
+                $("#callBodyHolder LABEL").html("Query String");
+                $("#callBodyHolder").css("display", "inline");
+            } else if (httpMethod == 'HEAD'){
+                $("#callBodyHolder").css("display", "none");
+            } else {
+                $("#callBodyHolder LABEL").html(httpMethod + " Body");
+                $("#callBodyHolder").css("display", "inline");
+            }
+
+            $("#submitStuff").css("display", "inline");
+        });
+
+        jQuery("#callForm").submit(function(){
+            var endpoint = jQuery("#handlerList").val() + "/" + jQuery("#methodList :selected").text();
+
+            var httpMethod = jQuery("#methodList :selected").val();
+            var body = jQuery("#callBody").val();
+
+            var prettyHeader = (jQuery('#debug:checked').val() !== null)
+                ? "true"
+                : "";
+
+            jQuery.ajaxSetup({
+                'beforeSend': function(xhr) {
+                    xhr.setRequestHeader($('#debug:checked').attr("name"), prettyHeader);
+                }
+            });
+
+            jQuery.ajax({
+                url: endpoint,
+                type: httpMethod,
+                dataType: "text",
+                data: jQuery.trim(jQuery("#callBody").val()),
+
+                complete: function(data, textStatus) {
+                    $('#headers').html("<pre>" + data.getAllResponseHeaders() + "</pre>");
+                    $('#results').css("display", "block");
+                    $('#resultsHolder').css("width", "100%");
+                    $('#resultsHolder').val(data.responseText);
+                    return false;
+                }
+            });
+
+            return false;
+        });
+    });
+</script>
+</html>
