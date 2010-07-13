@@ -137,7 +137,7 @@ Test an endpoint
 
     String response at:
 
-    <a href="http://localhost:8080/my_prefix/endpointThatReturnsAString">http://localhost:8080/my_prefix/endpointThatReturnsAString</a>
+    [http://localhost:8080/my_prefix/endpointThatReturnsAString](http://localhost:8080/my_prefix/endpointThatReturnsAString)
     or
     <a href="http://localhost:8080/my_prefix/endpointThatGrabsAQueryStringParameter?name=bill">http://localhost:8080/my_prefix/endpointThatGrabsAQueryStringParameter?name=bill</a>
 
@@ -153,7 +153,7 @@ Test an endpoint
 
     curl "X-Aljeers-Debug:true" -d "{\"name\": \"arin\"}" http://localhost:8080/my_prefix/postAUser && echo ""
 
-Or enable the Frontend console in `path/to/your/handlers.conf` and hit the endpoints from there    
+Or enable the Frontend console in `path/to/your/handlers.conf` and hit the endpoints from there
 
     /fe = com.phatduckk.aljeers.handler.FrontendHandler
 
