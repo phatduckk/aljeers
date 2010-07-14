@@ -14,10 +14,14 @@ public class AljeersResponse {
     private Object body = null;
     private int status = 200;
     private Map<String, Object> headers = new HashMap<String, Object>();
-    
+
     private static final String HEADER_STATUS = "X-Aljeers-Status";
     private static final String HEADER_BODY_TYPE = "X-Aljeers-BodyType";
     private static final String HEADER_BODY_TYPE_SIMPLE = "X-Aljeers-BodyType-Simple";
+
+    public AljeersResponse(Object body) {
+        this.body = body;
+    }
 
     public AljeersResponse(Object body, int status, Map<String, Object> headers) {
         setBody(body);

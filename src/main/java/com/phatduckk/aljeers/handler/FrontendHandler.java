@@ -3,7 +3,6 @@ package com.phatduckk.aljeers.handler;
 import com.phatduckk.aljeers.Aljeers;
 import com.phatduckk.aljeers.example.ExampleHandler;
 import com.phatduckk.aljeers.handler.annotations.*;
-import com.phatduckk.aljeers.response.DoNothing;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -32,15 +31,15 @@ public class FrontendHandler extends BaseHandler {
     }
 
     @GET
-    public DoNothing index(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    public void index(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         VelocityContext context = new VelocityContext();
         context.put("handlers", getHandlers());
 
-        return render("templates/index.html", context, resp);
+        render("templates/index.html", context, resp);
     }
 
     @POST
-    public DoNothing getMethods(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+    public void getMethods(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         VelocityContext context = new VelocityContext();
         String handler = req.getParameter("handler");
 
@@ -76,10 +75,10 @@ public class FrontendHandler extends BaseHandler {
         }
 
         context.put("methods", validMethods);
-        return render("templates/methodList.html", context, resp);
+        render("templates/methodList.html", context, resp);
     }
 
-    public DoNothing render(String templateFile, VelocityContext context, HttpServletResponse resp) throws IOException {
+    public void render(String templateFile, VelocityContext context, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/html");
         BufferedWriter writer = new BufferedWriter(resp.getWriter());
 
@@ -92,8 +91,6 @@ public class FrontendHandler extends BaseHandler {
             writer.flush();
             writer.close();
         }
-
-        return new DoNothing();
     }
 
     private static VelocityEngine getVelocityEngine() throws Exception {
