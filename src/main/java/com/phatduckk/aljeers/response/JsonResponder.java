@@ -3,8 +3,8 @@ package com.phatduckk.aljeers.response;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class JsonResponse extends Response {
-    public JsonResponse(Object responseObject, HttpServletRequest req, HttpServletResponse resp) {
+public class JsonResponder extends Responder {
+    public JsonResponder(Object responseObject, HttpServletRequest req, HttpServletResponse resp) {
         super(responseObject, req, resp);
     }
 

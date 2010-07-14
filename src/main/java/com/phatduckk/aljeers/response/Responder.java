@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public abstract class Response {
+public abstract class Responder {
     protected Object responseObject;
     protected HttpServletRequest req;
     protected HttpServletResponse resp;
@@ -18,17 +18,17 @@ public abstract class Response {
     public static final String HEADER_RESPONSE_BODY_TYPE_SIMPLE = "X-Aljeers-Exception-Type-Simple";
     public static final String HEADER_STATUS = "X-Aljeers-Status";
 
-    protected Response(Object responseObject, HttpServletRequest req, HttpServletResponse resp) {
+    protected Responder(Object responseObject, HttpServletRequest req, HttpServletResponse resp) {
         this.responseObject = responseObject;
         this.req = req;
         this.resp = resp;
     }
 
-    public static Response factory(Object responseObject, HttpServletRequest req, HttpServletResponse resp) {
+    public static Responder factory(Object responseObject, HttpServletRequest req, HttpServletResponse resp) {
         if (responseObject instanceof Throwable) {
-            return new InternalErrorResponse((Throwable) responseObject, req, resp);
+            return new InternalErrorResponder((Throwable) responseObject, req, resp);
         } else {
-            return new JsonResponse(responseObject, req, resp);
+            return new JsonResponder(responseObject, req, resp);
         }
     }
 

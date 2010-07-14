@@ -1,4 +1,4 @@
-package com.phatduckk.aljeers.request;
+package com.phatduckk.aljeers.http;
 
 import org.apache.commons.io.IOUtils;
 
@@ -7,14 +7,14 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import java.io.IOException;
 
 public class JsonRequest extends HttpServletRequestWrapper {
+    public static final String HEADER_DEBUG = "X-Aljeers-Debug";
+    public static final String PARAM_DEBUG = HEADER_DEBUG;
+
     private byte[] requestBodyBytes;
 
     public JsonRequest(HttpServletRequest request) throws IOException {
         super(request);
-
         requestBodyBytes = IOUtils.toByteArray(super.getInputStream());
-        super.getInputStream().reset();
-        System.out.println("jhuh");
     }
 
     public String getBody() {
@@ -23,5 +23,15 @@ public class JsonRequest extends HttpServletRequestWrapper {
 
     public byte[] getRawBody() {
         return requestBodyBytes;
+    }
+
+    public boolean isDebug() {
+        String debugHeader = getHeader(HEADER_DEBUG);
+        if (debugHeader != null) {
+            return (debugHeader.equals("1") || debugHeader.equals("true"));
+        }
+
+        String debugParam = getParameter(PARAM_DEBUG);
+        return ((debugParam != null) && (debugParam.equals("1") || debugParam.equals("true")));
     }
 }

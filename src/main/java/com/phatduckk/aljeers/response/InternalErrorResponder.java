@@ -3,9 +3,9 @@ package com.phatduckk.aljeers.response;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class InternalErrorResponse extends Response {
+public class InternalErrorResponder extends Responder {
 
-    public InternalErrorResponse(Throwable responseObject, HttpServletRequest req, HttpServletResponse resp) {
+    public InternalErrorResponder(Throwable responseObject, HttpServletRequest req, HttpServletResponse resp) {
         super(responseObject, req, resp);
     }
 

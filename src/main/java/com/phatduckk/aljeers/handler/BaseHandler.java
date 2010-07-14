@@ -2,7 +2,7 @@ package com.phatduckk.aljeers.handler;
 
 import com.phatduckk.aljeers.exception.InvalidRequestException;
 import com.phatduckk.aljeers.response.DoNothing;
-import com.phatduckk.aljeers.response.Response;
+import com.phatduckk.aljeers.response.Responder;
 import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -111,8 +111,8 @@ public abstract class BaseHandler extends HttpServlet {
             return;
         }
 
-        Response response = Response.factory(responseObject, req, resp);
-        response.respond();
+        Responder responder = Responder.factory(responseObject, req, resp);
+        responder.respond();
     }
 
     protected String getRequestBody(HttpServletRequest req) throws IOException {

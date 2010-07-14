@@ -1,4 +1,6 @@
-package com.phatduckk.aljeers.request;
+package com.phatduckk.aljeers.http;
+
+import com.phatduckk.aljeers.http.JsonRequest;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;

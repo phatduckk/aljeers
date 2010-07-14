@@ -1,10 +1,7 @@
 package com.phatduckk.aljeers;
 
 import com.phatduckk.aljeers.handler.BaseHandler;
-import com.phatduckk.aljeers.request.JsonFilter;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.handler.ErrorHandler;
-import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
