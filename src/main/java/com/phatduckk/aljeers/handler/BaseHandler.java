@@ -1,7 +1,7 @@
 package com.phatduckk.aljeers.handler;
 
 import com.phatduckk.aljeers.exception.InvalidRequestException;
-import com.phatduckk.aljeers.response.Responder;
+import com.phatduckk.aljeers.http.Responder;
 import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 

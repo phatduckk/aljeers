@@ -1,4 +1,4 @@
-package com.phatduckk.aljeers.response;
+package com.phatduckk.aljeers.http;
 
 import com.phatduckk.aljeers.http.AljeersResponse;
 import org.codehaus.jackson.map.ObjectMapper;
