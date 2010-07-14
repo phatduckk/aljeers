@@ -1,6 +1,5 @@
 package com.phatduckk.aljeers.http;
 
-import com.phatduckk.aljeers.http.AljeersResponse;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
 
@@ -17,10 +16,8 @@ public class Responder {
     public static final String HEADER_DEBUG = "X-Aljeers-Debug";
 
 
-    public Responder(Object aljeersResponse, HttpServletRequest req, HttpServletResponse resp) {
-        this.aljeersResponse = new AljeersResponse(aljeersResponse);
-        this.req = req;
-        this.resp = resp;
+    public Responder(Object response, HttpServletRequest req, HttpServletResponse resp) {
+        this(new AljeersResponse(response), req, resp);
     }
 
     protected Responder(AljeersResponse aljeersResponse, HttpServletRequest req, HttpServletResponse resp) {
@@ -39,9 +36,9 @@ public class Responder {
 
         Map<String,Object> headers = aljeersResponse.getHeaders();
         for (String headerName : headers.keySet()) {
-            resp.setHeader(headerName, headers.get(headerName).toString());
+            Object headerValue = headers.get(headerName);
+            resp.setHeader(headerName, (headerValue != null) ? headerValue.toString() : null);
         }
-
 
         try {
             if (isDebug) {

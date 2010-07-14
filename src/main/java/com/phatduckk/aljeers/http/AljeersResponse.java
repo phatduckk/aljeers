@@ -1,37 +1,32 @@
 package com.phatduckk.aljeers.http;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * User: arin
- * Date: Jul 14, 2010
- * Time: 1:11:14 PM
- */
-
-
 public class AljeersResponse {
     private Object body = null;
-    private int status = 200;
+    private int status = HttpServletResponse.SC_OK;
     private Map<String, Object> headers = new HashMap<String, Object>();
 
     private static final String HEADER_STATUS = "X-Aljeers-Status";
-    private static final String HEADER_BODY_TYPE = "X-Aljeers-BodyType";
-    private static final String HEADER_BODY_TYPE_SIMPLE = "X-Aljeers-BodyType-Simple";
+    private static final String HEADER_BODY_TYPE = "X-Aljeers-Body-Type";
+    private static final String HEADER_BODY_TYPE_SIMPLE = "X-Aljeers-Body-Type-Simple";
+    private static final String HEADER_EXCEPTION_MESSAGE = "X-Aljeers-Exception-Message";
 
     public AljeersResponse(Object body) {
-        this.body = body;
+        setBody(body);
     }
 
     public AljeersResponse(Object body, int status, Map<String, Object> headers) {
         setBody(body);
         setStatus(status);
-        this.headers = headers;
+        setHeaders(headers);
     }
 
     public AljeersResponse(Object body, Map<String, Object> headers) {
         setBody(body);
-        setStatus(status);
+        setHeaders(headers);
     }
 
     public Object getBody() {
@@ -39,18 +34,18 @@ public class AljeersResponse {
     }
 
     public void setBody(Object body) {
-        addHeader(HEADER_BODY_TYPE, body.getClass().getCanonicalName());
-        addHeader(HEADER_BODY_TYPE_SIMPLE, body.getClass().getSimpleName());
+        this.body = body;
+
+        addHeader(HEADER_BODY_TYPE, (body != null) ? body.getClass().getCanonicalName() : null);
+        addHeader(HEADER_BODY_TYPE_SIMPLE, (body != null) ? body.getClass().getSimpleName() : null);
 
         if (body == null) {
-            setStatus(204);
-        } else if (body instanceof Throwable) {
-            setStatus(500);
+            setStatus(HttpServletResponse.SC_NO_CONTENT);
+        } else if (isBodyThrowable()) {
+            setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         } else {
-            setStatus(200);
+            setStatus(HttpServletResponse.SC_OK);
         }
-
-        this.body = body;
     }
 
     public int getStatus() {
@@ -58,12 +53,24 @@ public class AljeersResponse {
     }
 
     public void setStatus(int status) {
-        addHeader(HEADER_STATUS, status);
-        this.status = status;
+        setStatus(status, true);
     }
 
-    private void addHeader(String headerName, Object headerValue) {
+    public void setStatus(int status, boolean setMessageHeaderOnThrowable) {
+        this.status = status;
+        addHeader(HEADER_STATUS, status);
+
+        if (setMessageHeaderOnThrowable && isBodyThrowable()) {
+            addHeader(HEADER_EXCEPTION_MESSAGE, ((Throwable) body).getMessage());
+        }
+    }
+
+    public void addHeader(String headerName, Object headerValue) {
         headers.put(headerName, headerValue);
+    }
+
+    public void addHeaders(Map<String, Object> headers) {
+        headers.putAll(headers);
     }
 
     public Map<String, Object> getHeaders() {
@@ -71,6 +78,14 @@ public class AljeersResponse {
     }
 
     public void setHeaders(Map<String, Object> headers) {
-        this.headers = headers;
+        headers = headers;
+    }
+
+    public void removeHeader(String header) {
+        headers.remove(header);
+    }
+
+    public boolean isBodyThrowable() {
+        return body instanceof Throwable;
     }
 }
