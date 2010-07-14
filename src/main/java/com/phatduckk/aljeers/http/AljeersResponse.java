@@ -1,5 +1,7 @@
 package com.phatduckk.aljeers.http;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
@@ -56,12 +58,18 @@ public class AljeersResponse {
         setStatus(status, true);
     }
 
-    public void setStatus(int status, boolean setMessageHeaderOnThrowable) {
+    public void setStatus(int status, boolean isSetMessageHeaderOnThrowable) {
         this.status = status;
+        boolean isBodyThrowable = isBodyThrowable();
+
         addHeader(HEADER_STATUS, status);
 
-        if (setMessageHeaderOnThrowable && isBodyThrowable()) {
+        if (isSetMessageHeaderOnThrowable && isBodyThrowable) {
             addHeader(HEADER_EXCEPTION_MESSAGE, ((Throwable) body).getMessage());
+        }
+
+        if (!isBodyThrowable) {
+            removeHeader(HEADER_EXCEPTION_MESSAGE);
         }
     }
 
@@ -85,6 +93,7 @@ public class AljeersResponse {
         headers.remove(header);
     }
 
+    @JsonIgnore
     public boolean isBodyThrowable() {
         return body instanceof Throwable;
     }
