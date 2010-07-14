@@ -6,13 +6,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import java.io.IOException;
 
-public class JsonRequest extends HttpServletRequestWrapper {
+public class AljeersRequest extends HttpServletRequestWrapper {
     public static final String HEADER_DEBUG = "X-Aljeers-Debug";
     public static final String PARAM_DEBUG = HEADER_DEBUG;
 
     private byte[] requestBodyBytes;
 
-    public JsonRequest(HttpServletRequest request) throws IOException {
+    public AljeersRequest(HttpServletRequest request) throws IOException {
         super(request);
         requestBodyBytes = IOUtils.toByteArray(super.getInputStream());
     }
