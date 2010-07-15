@@ -12,11 +12,13 @@ public class AljeersResponse {
     private Object body = null;
     private int status = HttpServletResponse.SC_OK;
     private Map<String, Object> headers = new HashMap<String, Object>();
+    private boolean respondRawString = false;
 
-    private static final String HEADER_STATUS = "X-Aljeers-Status";
-    private static final String HEADER_BODY_TYPE = "X-Aljeers-Body-Type";
-    private static final String HEADER_BODY_TYPE_SIMPLE = "X-Aljeers-Body-Type-Simple";
-    private static final String HEADER_EXCEPTION_MESSAGE = "X-Aljeers-Exception-Message";
+    public static final String HEADER_STATUS = "X-Aljeers-Status";
+    public static final String HEADER_BODY_TYPE = "X-Aljeers-Body-Type";
+    public static final String HEADER_BODY_TYPE_SIMPLE = "X-Aljeers-Body-Type-Simple";
+    public static final String HEADER_EXCEPTION_MESSAGE = "X-Aljeers-Exception-Message";
+    public static final String HEADER_CONTENT_TYPE = "Content-Type";
 
     public AljeersResponse(Object body) {
         setBody(body);
@@ -109,5 +111,23 @@ public class AljeersResponse {
     @JsonIgnore
     public boolean isBodyThrowable() {
         return body instanceof Throwable;
+    }
+
+    @JsonIgnore
+    public boolean isRespondRawString() {
+        return respondRawString;
+    }
+
+    public void setRespondRawString(boolean respondRawString) {
+        this.respondRawString = respondRawString;
+    }
+
+    @JsonIgnore
+    public String getContentType() {
+        return (String) getHeader(HEADER_CONTENT_TYPE);
+    }
+
+    private Object getHeader(String header) {
+        return headers.get(header);
     }
 }

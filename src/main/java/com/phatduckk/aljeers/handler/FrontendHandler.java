@@ -4,15 +4,15 @@ import com.phatduckk.aljeers.Aljeers;
 import com.phatduckk.aljeers.example.ExampleHandler;
 import com.phatduckk.aljeers.handler.annotations.*;
 import com.phatduckk.aljeers.http.AljeersRequest;
+import com.phatduckk.aljeers.http.AljeersResponse;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -31,15 +31,15 @@ public class FrontendHandler extends BaseHandler {
     }
 
     @GET
-    public void index(AljeersRequest req, HttpServletResponse resp) throws IOException {
+    public AljeersResponse index(AljeersRequest req) throws IOException {
         VelocityContext context = new VelocityContext();
         context.put("handlers", getHandlers());
 
-        render("templates/index.html", context, resp);
+        return render("templates/index.html", context);
     }
 
     @POST
-    public void getMethods(AljeersRequest req, HttpServletResponse resp) throws Exception {
+    public AljeersResponse getMethods(AljeersRequest req) throws Exception {
         VelocityContext context = new VelocityContext();
         String handler = req.getParameter("handler");
 
@@ -75,12 +75,11 @@ public class FrontendHandler extends BaseHandler {
         }
 
         context.put("methods", validMethods);
-        render("templates/methodList.html", context, resp);
+        return render("templates/methodList.html", context);
     }
 
-    public void render(String templateFile, VelocityContext context, HttpServletResponse resp) throws IOException {
-        resp.setContentType("text/html");
-        BufferedWriter writer = new BufferedWriter(resp.getWriter());
+    public AljeersResponse render(String templateFile, VelocityContext context) throws IOException {
+        StringWriter writer = new StringWriter();
 
         try {
             Template template = getVelocityEngine().getTemplate(templateFile, "UTF-8");
@@ -91,6 +90,11 @@ public class FrontendHandler extends BaseHandler {
             writer.flush();
             writer.close();
         }
+
+        AljeersResponse resp = new AljeersResponse(writer.toString());
+        resp.addHeader("Content-Type", "text/html");
+        resp.setRespondRawString(true);
+        return resp;
     }
 
     private static VelocityEngine getVelocityEngine() throws Exception {

@@ -70,14 +70,13 @@ public abstract class BaseHandler extends HttpServlet {
             endpointName = uriParts[2];
         }
 
-        Class[] args = new Class[2];
+        Class[] args = new Class[1];
         args[0] = AljeersRequest.class;
-        args[1] = HttpServletResponse.class;
 
         try {
             Method method = getEndpointMethod(endpointName, args);
             validateHttpMethod(aljeersReq, method);
-            Object responseObject = method.invoke(this, aljeersReq, resp);
+            Object responseObject = method.invoke(this, aljeersReq);
             respond(responseObject, aljeersReq, resp);
         } catch (MethodNotAllowedException e) {
             respond(e, aljeersReq, resp);
