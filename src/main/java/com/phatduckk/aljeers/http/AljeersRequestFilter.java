@@ -5,8 +5,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 
-public class JsonFilter implements Filter {
-    public JsonFilter() {
+public class AljeersRequestFilter implements Filter {
+    public AljeersRequestFilter() {
         super();
     }
 

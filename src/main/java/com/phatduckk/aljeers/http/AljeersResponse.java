@@ -1,5 +1,7 @@
 package com.phatduckk.aljeers.http;
 
+import com.phatduckk.aljeers.exception.MethodNotAllowedException;
+import com.phatduckk.aljeers.exception.NotFoundException;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 import javax.servlet.http.HttpServletResponse;
@@ -31,6 +33,10 @@ public class AljeersResponse {
         setHeaders(headers);
     }
 
+    public AljeersResponse() {
+
+    }
+
     public Object getBody() {
         return body;
     }
@@ -44,12 +50,19 @@ public class AljeersResponse {
         if (body == null) {
             setStatus(HttpServletResponse.SC_NO_CONTENT);
         } else if (isBodyThrowable()) {
-            setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            if (body instanceof NotFoundException) {
+                setStatus(HttpServletResponse.SC_NOT_FOUND);
+            } else if (body instanceof MethodNotAllowedException) {
+                setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+            } else {
+                setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            }
         } else {
             setStatus(HttpServletResponse.SC_OK);
         }
     }
 
+    @JsonIgnore
     public int getStatus() {
         return status;
     }

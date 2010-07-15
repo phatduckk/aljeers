@@ -1,6 +1,7 @@
 package com.phatduckk.aljeers.http;
 
 import org.apache.commons.io.IOUtils;
+import org.codehaus.jackson.map.ObjectMapper;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
@@ -14,14 +15,21 @@ public class AljeersRequest extends HttpServletRequestWrapper {
 
     public AljeersRequest(HttpServletRequest request) throws IOException {
         super(request);
-        requestBodyBytes = IOUtils.toByteArray(super.getInputStream());
     }
 
     public String getBody() {
-        return new String(requestBodyBytes);
+        return new String(getRawBody());
     }
 
     public byte[] getRawBody() {
+        if (requestBodyBytes == null) {
+            try {
+                requestBodyBytes = IOUtils.toByteArray(super.getInputStream());
+            } catch (IOException e) {
+                requestBodyBytes = new byte[0];
+            }
+        }
+
         return requestBodyBytes;
     }
 
@@ -33,5 +41,19 @@ public class AljeersRequest extends HttpServletRequestWrapper {
 
         String debugParam = getParameter(PARAM_DEBUG);
         return ((debugParam != null) && (debugParam.equals("1") || debugParam.equals("true")));
+    }
+
+    public Object getObjectFromRequest(Class mapToObject) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.readValue(getBody(), mapToObject);
+    }
+
+    public Object getObjectFromParameter(String parameter, Class mapToObject) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        String propertyValue = getParameter(parameter);
+
+        return (propertyValue == null)
+                ? null
+                : mapper.readValue(propertyValue, mapToObject);
     }
 }

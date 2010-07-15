@@ -1,6 +1,7 @@
 package com.phatduckk.aljeers;
 
 import com.phatduckk.aljeers.handler.BaseHandler;
+import com.phatduckk.aljeers.http.AljeersRequestFilter;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -42,7 +43,7 @@ public class Aljeers {
 
     protected void setupHandlers(ServletContextHandler context) throws Exception {
         Properties handlers = (Properties) getHandlers();
-        
+
         for (Object s : handlers.keySet()) {
             String uri = (String) s;
             String className = (String) handlers.get(uri);
@@ -51,6 +52,8 @@ public class Aljeers {
             context.addServlet(new ServletHolder(handler), uri);
             context.addServlet(new ServletHolder(handler), uri + "/*");
         }
+
+        context.addFilter(AljeersRequestFilter.class, "/*", 1);
     }
 
     public static int getPort() {

@@ -1,14 +1,14 @@
 package com.phatduckk.aljeers.handler;
 
-import com.phatduckk.aljeers.exception.InvalidRequestException;
+import com.phatduckk.aljeers.exception.MethodNotAllowedException;
+import com.phatduckk.aljeers.exception.NotFoundException;
+import com.phatduckk.aljeers.http.AljeersRequest;
+import com.phatduckk.aljeers.http.AljeersResponse;
 import com.phatduckk.aljeers.http.Responder;
-import org.apache.commons.io.IOUtils;
-import org.codehaus.jackson.map.ObjectMapper;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -62,7 +62,8 @@ public abstract class BaseHandler extends HttpServlet {
     }
 
     private void respond(HttpServletRequest req, HttpServletResponse resp) {
-        String[] uriParts = req.getRequestURI().split("/");
+        AljeersRequest aljeersReq = (AljeersRequest) req;
+        String[] uriParts = aljeersReq.getRequestURI().split("/");
         String endpointName = DEFAULT_ENDPOINT;
 
         if (uriParts.length > 2) {
@@ -70,21 +71,22 @@ public abstract class BaseHandler extends HttpServlet {
         }
 
         Class[] args = new Class[2];
-        args[0] = HttpServletRequest.class;
+        args[0] = AljeersRequest.class;
         args[1] = HttpServletResponse.class;
 
         try {
             Method method = getEndpointMethod(endpointName, args);
-            validateHttpMethod(req, method);
-            respond(method.invoke(this, req, resp), req, resp);
-        } catch (InvalidRequestException e) {
-            respond(new InvalidRequestException("Invalid endpoint: " + endpointName), req, resp);
+            validateHttpMethod(aljeersReq, method);
+            Object responseObject = method.invoke(this, aljeersReq, resp);
+            respond(responseObject, aljeersReq, resp);
+        } catch (MethodNotAllowedException e) {
+            respond(e, aljeersReq, resp);
         } catch (NoSuchMethodException e) {
-            respond(new InvalidRequestException("Invalid endpoint: " + endpointName), req, resp);
+            respond(new NotFoundException("Invalid endpoint: " + endpointName), aljeersReq, resp);
         } catch (InvocationTargetException e) {
-            respond(e.getTargetException(), req, resp);
+            respond(e.getTargetException(), aljeersReq, resp);
         } catch (Throwable e) {
-            respond(e, req, resp);
+            respond(e, aljeersReq, resp);
         }
     }
 
@@ -92,7 +94,7 @@ public abstract class BaseHandler extends HttpServlet {
         return this.getClass().getMethod(endpointName, args);
     }
 
-    private void validateHttpMethod(HttpServletRequest req, Method method) throws InvalidRequestException {
+    private void validateHttpMethod(HttpServletRequest req, Method method) throws MethodNotAllowedException {
         String httpRequestMethod = req.getMethod();
         Annotation[] annotations = method.getAnnotations();
 
@@ -102,30 +104,14 @@ public abstract class BaseHandler extends HttpServlet {
             }
         }
 
-        throw new InvalidRequestException("Cannot access " + method.getName() + " via HTTP " + httpRequestMethod);
+        throw new MethodNotAllowedException("Cannot access " + method.getName() + " via HTTP " + httpRequestMethod);
     }
 
     private void respond(Object responseObject, HttpServletRequest req, HttpServletResponse resp) {
-        Responder responder = new Responder(responseObject, req, resp);
+        Responder responder = (responseObject instanceof AljeersResponse)
+                ? new Responder((AljeersResponse) responseObject, (AljeersRequest) req, resp)
+                : new Responder(responseObject, (AljeersRequest) req, resp);
+
         responder.respond();
-    }
-
-    protected String getRequestBody(HttpServletRequest req) throws IOException {
-        String s = new String(IOUtils.toByteArray(req.getInputStream()));
-        return s;
-    }
-
-    protected Object getObjectFromRequest(HttpServletRequest req, Class mapToObject) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(getRequestBody(req), mapToObject);
-    }
-
-    protected Object getObjectFromRequestParameter(HttpServletRequest req, String parameter, Class mapToObject) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        String propertyValue = req.getParameter(parameter);
-
-        return (propertyValue == null)
-                ? null
-                : mapper.readValue(propertyValue, mapToObject);
     }
 }

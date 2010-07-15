@@ -10,18 +10,16 @@ import java.util.Map;
 
 public class Responder {
     protected AljeersResponse aljeersResponse;
-    protected HttpServletRequest req;
+    protected AljeersRequest req;
     protected HttpServletResponse resp;
 
     public static final String HEADER_DEBUG = "X-Aljeers-Debug";
 
+    public Responder(Object response, AljeersRequest req, HttpServletResponse resp) {
+        this.aljeersResponse = (response instanceof AljeersResponse)
+                ? (AljeersResponse) response
+                : new AljeersResponse(response);
 
-    public Responder(Object response, HttpServletRequest req, HttpServletResponse resp) {
-        this(new AljeersResponse(response), req, resp);
-    }
-
-    protected Responder(AljeersResponse aljeersResponse, HttpServletRequest req, HttpServletResponse resp) {
-        this.aljeersResponse = aljeersResponse;
         this.req = req;
         this.resp = resp;
     }
@@ -40,8 +38,10 @@ public class Responder {
             resp.setHeader(headerName, (headerValue != null) ? headerValue.toString() : null);
         }
 
+        resp.setStatus(aljeersResponse.getStatus());
+
         try {
-            if (isDebug) {
+            if (req.isDebug()) {
                 resp.setContentType("text/plain");
                 mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
                 serializeMe = aljeersResponse;
